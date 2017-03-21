@@ -63,7 +63,7 @@ module.exports = {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
         loader: 'url',
         query: {
-          limit: 100000000,
+          limit: 10000000000000,
           name: utils.assetsPath('img/[name].[hash:7].[ext]')
         }
       },
@@ -71,7 +71,7 @@ module.exports = {
         test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
         loader: 'url',
         query: {
-          limit: 1000000,
+          limit: 10000000000000,
           name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
         }
       }
