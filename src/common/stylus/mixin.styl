@@ -7,8 +7,11 @@ border-1px($color)
     left 0
     bottom 0
     border-top 1px solid $color
-    content ''
+    content ' '
 
+border-none()
+  &:after
+   display none
 
 bg-image($url)
   background-image url($url + "@2x.png")
