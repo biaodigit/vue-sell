@@ -17,6 +17,9 @@ let router = new VueRouter({         //创建实例
 });
 
 router.map({             //给每一个页面注册一个组件，嵌套进App.vue
+  '/': {
+    component: goods
+  },
   '/goods':{
     component:goods
   },
@@ -30,4 +33,4 @@ router.map({             //给每一个页面注册一个组件，嵌套进App.v
 
 router.start(app,'#app'); //把app实例挂载到选择符#app元素上
 
-router.go('/goods');    //页面启动默认路由组件
+

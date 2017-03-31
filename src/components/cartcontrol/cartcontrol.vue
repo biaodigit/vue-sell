@@ -1,10 +1,10 @@
 <template>
   <div class="cartcontrol">
-    <div class="cart-decrease" v-show="food.count>0" @click="decreaseCart" transition="move">
+    <div class="cart-decrease" v-show="food.count>0"  @click.stop.prevent="decreaseCart" transition="move">
       <span class="inner"><img src="decrease.png"></span>
     </div>
     <div class="cart-count" v-show="food.count>0">{{food.count}}</div>
-    <div class="cart-add"><img src="add.png" @click="addCart"></div>
+    <div class="cart-add"><img src="add.png" @click.stop.prevent="addCart"></div>
   </div>
 </template>
 
@@ -49,7 +49,7 @@
       transition all 0.6s linear
       &.move-transition
         opacity 1
-        transform translate3d(0,0,0)
+        transform translate3D(0,0,0)
         .inner
           display inline-block
           line-height 24px
@@ -62,7 +62,7 @@
             padding 6px 8px
       &.move-enter,&.move-leave
         opacity 0
-        transform translate3d(24px,0,0)
+        transform translate3D(24px,0,0)
         .inner
           transform rotate(180deg)
     .cart-count

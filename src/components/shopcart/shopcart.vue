@@ -54,7 +54,7 @@
         selectFoods:{
           type:Array,
           default() {
-              return [ ];
+              return [];
           }
         },
         deliveryPrice:{
@@ -90,6 +90,7 @@
           }
       },
       computed:{
+          //计算总价
         totalPrice() {
           let total = 0;
           this.selectFoods.forEach((food) => {
@@ -97,6 +98,7 @@
           });
           return total;
         },
+        //计算总数
         totalCount() {
           let count = 0;
           this.selectFoods.forEach((food) => {
@@ -104,6 +106,7 @@
           });
           return count;
         },
+        //计算结算页面信息
         payDesc() {
           if (this.totalPrice === 0) {
             return `￥${this.minPrice}元起送`;
@@ -114,6 +117,7 @@
             return '去结算';
           }
         },
+        //结算页面样式
         payClass() {
           if (this.totalPrice < this.minPrice) {
             return 'not-enough';
@@ -121,6 +125,7 @@
             return 'enough';
           }
         },
+        //购物车图片
         cartImg() {
           if(this.totalPrice>0){
             return require('./shopcart2.png');
@@ -128,9 +133,9 @@
             return require('./shopcart.png');
           }
         },
+        //购物车隐藏属性
         listShow() {
           if(!this.totalCount){
-            this.fold = true;
             return false;
           }
           let show = !this.fold;
@@ -149,6 +154,7 @@
         }
       },
       methods:{
+        //小球动画事件
         drop(el) {
           for(let i=0;i<this.balls.length;i++){
             let ball = this.balls[i];
@@ -160,17 +166,20 @@
             }
           }
         },
+        //购物车列表隐藏属性
         toggleList() {
               if(!this.totalCount){
                   return;
               }
               this.fold = !this.fold;
         },
+        //清除购物车
         empty() {
             this.selectFoods.forEach((food) => {
                 food.count = 0;
             })
         },
+        //隐藏购物车
         hideList() {
             this.fold = true;
         },
@@ -220,9 +229,9 @@
           }
         }
     },
-      components:{
-          cartcontrol
-      }
+    components:{
+      cartcontrol
+    }
   };
 </script>
 

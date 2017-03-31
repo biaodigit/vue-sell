@@ -13,7 +13,7 @@
         <li v-for="item in goods" class="food-list food-list-hook">
           <h1 class="title">{{item.name}}</h1>
           <ul>
-            <li v-for="food in item.foods" class="food-item border-1px">
+            <li v-for="food in item.foods" @click="selectFood(food,$event)" class="food-item border-1px">
               <div class="icon">
                 <img width="57" height="57" :src="food.icon">
               </div>
@@ -38,29 +38,33 @@
     </div>
     <shopcart v-ref:shopcart :select-foods="selectFoods" :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice"></shopcart>
   </div>
+  <food :food="selectedFood" v-ref:food></food>
 </template>
 
 <script type="text/ecmascript-6">
   import BScroll from "better-scroll";
   import shopcart from "components/shopcart/shopcart.vue";
   import cartcontrol from "components/cartcontrol/cartcontrol.vue";
+  import food from "components/food/food.vue";
 
   const ERR_OK = 0;
 
   export default {
     props:{
         seller:{
-            type:Object
+            type:Object               //父组件app.vue向子组件goods.vue传递seller数据
         }
     },
     data() {
       return {
-          goods:[],
-          listHeight:[],
-          scrollY:0
+          goods:[],                  //goods数据返回数组
+          listHeight:[],            //返回食物列表高度
+          scrollY:0,                  //返回scrollY
+          selectedFood:{}
       };
     },
     computed:{
+      //计算食物列表下落范围
       currentIndex() {
         for (let i = 0; i < this.listHeight.length; i++) {
           let height1 = this.listHeight[i];
@@ -71,6 +75,7 @@
         }
         return 0;
       },
+      //计算选取食物属性
       selectFoods() {
           let foods = [];
           this.goods.forEach((good) => {
@@ -98,6 +103,7 @@
         });
     },
     methods:{
+        //选取食物左侧列表
       selectMenu(index,event) {
           if(!event._constructed){
               return;
@@ -106,12 +112,21 @@
           let el = foodList[index];
           this.foodsScroll.scrollToElement(el,300);
       },
+      selectFood(food,event) {
+        if(!event._constructed){
+          return;
+        }
+        this.selectedFood = food;
+        this.$refs.food.show();
+      },
+      //回调获取shoprcart组件drop方法
       _drop(target) {
           //体验优化，异步执行下落动画
           this.$nextTick(() => {
             this.$refs.shopcart.drop(target);
           });
       },
+      //better-srcoll
       _initScroll() {
         this.meunScroll = new BScroll(this.$els.menuWrapper, {
           click:true
@@ -126,6 +141,7 @@
           this.scrollY = Math.abs(Math.round(pos.y));
         });
       },
+      //计算每一级食物选项高度
       _calculateHeight() {
         let foodList = this.$els.foodsWrapper.getElementsByClassName('food-list-hook');
         let height = 0;
@@ -137,14 +153,17 @@
         }
       }
     },
+    //注册组建
     components:{
         shopcart,
-        cartcontrol
+        cartcontrol,
+        food
     },
+    //访问cartcontrol组件与shopcart组件联动
     events:{
-        'cart.add'(target) {
-            this._drop(target);
-        }
+      'cart.add'(target) {
+        this._drop(target);
+      }
     }
   };
 </script>
