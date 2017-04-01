@@ -142,9 +142,9 @@
           },
           'content.toggle'(onlyContent){
               this.onlyContent = onlyContent;
-            this.$nextTick(() => {
-              this.scroll.refresh();
-            })
+              this.$nextTick(() => {
+                this.scroll.refresh();
+              })
           }
       }
   };
