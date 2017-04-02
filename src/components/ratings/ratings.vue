@@ -29,7 +29,7 @@
       <ratingselect :select-type="selectType" :only-content="onlyContent" :ratings="ratings"></ratingselect>
       <div class="rating-wrapper">
         <ul>
-          <li v-for="rating in ratings" v-show="needShow(rating.rateType,rating.text)" class="rating-item">
+          <li v-for="rating in ratings" v-show="needShow(rating.rateType,rating.text)"  class="rating-item">
             <div class="avatar">
               <img :src="rating.avatar" width="28" height="28">
             </div>
@@ -84,9 +84,7 @@
           if(response.errno === ERR_OK ){
               this.ratings = response.data;
               this.$nextTick(() => {
-                this.scroll = new BScroll(this.$els.ratings,{
-                  click:true
-                })
+                this._initScroll();
               })
           }
       })
@@ -98,35 +96,40 @@
       }
     },
     methods:{
-      needShow(type,text) {
-        if(this.onlyContent && !text){
-          return false;
-        };
-        if(this.selectType === ALL){
-          return true;
-        }else{
-          return type === this.selectType;
-        }
+      needShow(type,text){
+          if(this.onlyContent && !text){
+              return false;
+          }
+          if(this.selectType === ALL){
+              return true;
+          }else{
+              return type === this.selectType;
+          }
       },
+      _initScroll() {
+          this.scroll = new BScroll(this.$els.ratings,{
+              click:true
+          })
+      }
     },
     components:{
         star,
         ratingselect,
         split
     },
-    events:{
-      'ratingtype.select'(type){
-        this.selectType = type;
-        this.$nextTick(() => {
-          this.scroll.refresh();
-        })
-      },
-      'content.toggle'(onlyContent){
-        this.onlyContent = onlyContent;
-        this.$nextTick(() => {
-          this.scroll.refresh();
-        })
-      }
+    events: {
+        'ratingtype.select'(type){
+            this.selectType = type;
+            this.$nextTick(() => {
+                this.scroll.refresh();
+            })
+        },
+        'content.toggle'(onlyContent){
+            this.onlyContent = onlyContent;
+            this.$nextTick(() => {
+              this.scroll.refresh();
+            });
+        }
     }
   }
 </script>
@@ -159,7 +162,7 @@
           font-size 24px
           color rgb(255,153,0)
         .title
-          margin-bottom 8px
+          margin-bottom 12px
           line-height 12px
           font-size 12px
           color rgb(7,17,27)

@@ -12,31 +12,38 @@
         <a v-link="{path:'/seller'}">商家</a>
       </div>
     </div>
-    <router-view :seller="seller"></router-view>
+    <router-view :seller="seller" keep-alive></router-view>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
   import header from 'components/header/header.vue';
+  import {urlParse} from 'common/js/util';
 
   const ERR_OK = 0;
 
   export default {
     data() {
       return {
-          seller:{}
+        seller: {
+          id: (() => {
+            let queryParam = urlParse();
+            return queryParam.id;
+          })()
+        }
       };
     },
     created() {
-      this.$http.get('/api/seller').then((response) => {
-           response = response.body;   //转化成Object类型
-           if(response.errno === ERR_OK){
-               this.seller = response.data;
-           }
-      })
+      this.$http.get('/api/seller?id=' + this.seller.id).then((response) => {
+        response = response.body;
+        if (response.errno === ERR_OK) {
+          this.seller = Object.assign({}, this.seller, response.data);
+          console.log(this.seller.id);
+        }
+      });
     },
-    components:{
-      'v-header':header
+    components: {
+      'v-header': header
     }
   };
 </script>
